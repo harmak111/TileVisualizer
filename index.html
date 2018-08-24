@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="stylesheet.css">
+		<link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+		<script>
+            // Initialize Firebase
+            var config = {
+                apiKey: "AIzaSyBc5Ys6iwwQ8Bqu-SyVMXD-foCjByDgyNw",
+                authDomain: "tiles-visualizer.firebaseapp.com",
+                databaseURL: "https://tiles-visualizer.firebaseio.com",
+                projectId: "tiles-visualizer",
+                storageBucket: "tiles-visualizer.appspot.com",
+                messagingSenderId: "604202026051"
+            };
+            firebase.initializeApp(config);
+		</script>
+	</head>
+	<body>
+		<div id = "div4">
+		  <div id = "div3">
+			<div id="wall" style="background-color: whitesmoke"></div>
+		  </div>
+		</div>
+
+		<div id="sideNav" class="sidenav">
+
+			<div id="a" class="a">
+				<button class="closebtn" onclick="closesn()" ><i class="fa fa-times"></i></button>
+			</div>
+
+		   <div id="wallFloor" class="wfp">
+				<button id='Wall' class="wf act"  onclick="wnf(this.id)"> WALL TILES </button>
+				<button id='Floor' class="wf" onclick="wnf(this.id)"> FLOOR TILES </button>
+				<button id='Pattern' class="patternn" ><i class="fa fa-delicious"></i></button>
+				<button class="resett" onclick="window.location.reload()"><i class="fa fa-ban fa-lg"></i>  </button>
+		   </div>
+
+		   <div id="SC" class="sc">
+				<form class="example" action="/action_page.php" style="margin:5px ;max-width:200px;">
+					<input type="text" placeholder="Search.." name="search">
+					<button type="submit"><i class="fa fa-search"></i></button>
+				</form>
+				<button id='Filter' class="filterr" ><i class="fa fa-filter"></i></button>
+				<button id='btnGrout' class="btn-sc"> GROUT </button>
+		   </div>
+
+			<div id="PGY" class="btn-group">
+				<button id='Product' class="pgt active" onclick="wnf(this.id)"> PRODUCTS </button>
+				<button id='yourTiles' class="pgt"  onclick="wnf(this.id)" > YOUR TILES </button>
+			</div>
+
+			<div id="WBC" class="baseCombo">
+				<button id='BaseW' class="btn-bc active"  onclick="wnf(this.id)"> BASE WALL TILE </button>
+				<button id='ComboW' class="btn-bc"  onclick="wnf(this.id)"> COMBO WALL TILE </button>
+			</div>
+
+			<div id="FBC" class="baseCombo">
+				<button id='BaseF' class="btn-bc active"  onclick="wnf(this.id)"> BASE FLOOR TILE </button>
+				<button id='ComboF' class="btn-bc"  onclick="wnf(this.id)"> COMBO FLOOR TILE </button>
+			</div>
+
+			<div id="btnContainerW3" class="btnWall" style="height:73.5%; width:100%; overflow-y:scroll;"></div>
+			<div id="btnContainerF3" class="btnFloor" style="height:73.5%; width:100%; overflow-y:scroll;"></div>
+
+			<div id="btnContainerW4" class="btnWall" style="height:73.5%; width:100%; overflow-y:scroll;"></div>
+			<div id="btnContainerF4" class="btnFloor" style="height:73.5%; width:100%; overflow-y:scroll;"></div>
+
+
+			<button id="addbtn" class="addbtn"> <i class="fa fa-plus-square"> </i> </button>
+
+
+		</div>
+
+		<button class="sideNavTab" onclick="openSideNav()">  SELECT TILES  </button>
+
+		<div id="sideNav2" class="sidenav2">
+
+			<div class="upper">
+				FILTER TILES
+				<a onclick="reset()" class="clearfilter" style="float:right">
+					<i class="fa fa-ban"></i>
+					RESET
+				</a>
+			</div>
+
+			<br>
+			<br>
+
+			<div id = "container">
+				<div id="f_wall" class="panel-group" id="accordion">
+					<div id="f_wall_size" class="panel panel-default">
+						<div class="panel-heading active" data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+							<div class="panel-title">
+								 <a>BY<span>SIZE</span></a>
+							</div>
+						</div>
+						<div id="collapse1" class="panel-collapse collapse">
+							<div class="panel-body">
+								<li>
+									<input checked type="checkbox" id="wsize_120x60" value="120x60"  name="w_size" data-name="120x60">
+									<label for="wsize_120x60"><span></span> 120x60 </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="wsize_120x120" value="120x120"  name="w_size" data-name="120x120">
+									<label for="wsize_120x120"><span></span> 120x120 </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="wsize_120x40" value="120x30"  name="w_size" data-name="120x30">
+									<label for="wsize_120x40"><span></span> 120x30 </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="wsize_80x40" value="80x40"  name="w_size" data-name="80x40">
+									<label for="wsize_80x40"><span></span> 80x40 </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="wsize_60x40" value="60x40"  name="w_size" data-name="60x40">
+									<label for="wsize_60x40"><span></span> 60x40 </label>
+								</li>
+							</div>
+						</div>
+					</div>
+					<div id="f_wall_material" class="panel panel-default" >
+						<div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+							<div class="panel-title">
+								<a>BY<span>MATERIAL</span></a>
+							</div>
+						</div>
+
+						<div id="collapse2" class="panel-collapse collapse">
+							<div class="panel-body">
+								<li>
+									<input checked type="checkbox" id="material_porcelain" value="Porcelain Vitrified"  name="w_material" data-name="Porcelain">
+									<label for="material_porcelain"><span></span> Porcelain Vitrified </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="material_ceramic" value="Ceramic"  name="w_material" data-name="Ceramic">
+									<label for="material_ceramic"><span></span> Ceramic </label>
+								</li>
+							</div>
+						</div>
+					</div>
+
+					<div id="f_wall_finish" class="panel panel-default">
+						<div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+							<div class="panel-title">
+								<a>BY<span>FINISHING</span></a>
+							</div>
+						</div>
+
+						<div id="collapse3" class="panel-collapse collapse">
+							<div class="panel-body">
+								<li>
+									<input checked type="checkbox" id="finish_glossy" value="Glossy"  name="w_finish" data-name="Glossy">
+									<label for="finish_glossy"><span></span> Glossy </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="finish_liso" value="Liso"  name="w_finish" data-name="Matt">
+									<label for="finish_matt"><span></span> Liso </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="finish_textured" value="Textured"  name="w_finish" data-name="Glossy">
+									<label for="finish_glossy"><span></span> Textured </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="finish_rustic" value="Rustic"  name="w_finish" data-name="Glossy">
+									<label for="finish_glossy"><span></span> Rustic </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="finish_rasso" value="Rasso"  name="w_finish" data-name="Matt">
+									<label for="finish_matt"><span></span> Rasso </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="finish_NRS" value="NRS - Natural Relief Surface"  name="w_finish" data-name="Glossy">
+									<label for="finish_glossy"><span></span> NRS - Natural Relief Surface </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="finish_matt" value="High Sheen"  name="w_finish" data-name="Matt">
+									<label for="finish_matt"><span></span> High Sheen </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="finish_glossy" value="Dazzling Crystals"  name="w_finish" data-name="Glossy">
+									<label for="finish_glossy"><span></span> Dazzling Crystals </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="finish_glossy" value="Satin & Silk"  name="w_finish" data-name="Glossy">
+									<label for="finish_glossy"><span></span> Satin & Silk </label>
+								</li>
+							</div>
+						</div>
+					</div>
+
+					<div id="f_wall_company" class="panel panel-default">
+						<div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse4">
+							<div class="panel-title">
+								<a>BY<span>COMPANY</span></a>
+							</div>
+						</div>
+
+						<div id="collapse4" class="panel-collapse collapse">
+							<div class="panel-body">
+								<li>
+									<input checked type="checkbox" id="company_kajaria" value="Kajaria"  name="w_company" data-name="Kajaria">
+									<label for="company_kajaria"><span></span> Kajaria </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="company_somany" value="Somany"  name="w_company" data-name="Somany">
+									<label for="company_somany"><span></span> Somany </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="company_kajaria" value="Bajaj"  name="w_company" data-name="Kajaria">
+									<label for="company_kajaria"><span></span> Bajaj </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="company_somany" value="Nitco"  name="w_company" data-name="Somany">
+									<label for="company_somany"><span></span> Nitco </label>
+								</li>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div id="f_floor" class="panel-group" id="accordion1">
+					<div id="f_floor_size" class="panel panel-default">
+						<div class="panel-heading active" data-toggle="collapse" data-parent="#accordion1" href="#collapse5">
+							<div class="panel-title">
+								 <a>BY<span>SIZE</span></a>
+							</div>
+						</div>
+
+						<div id="collapse5" class="panel-collapse collapse">
+							<div class="panel-body">
+								<li>
+									<input checked type="checkbox" id="fsize_120x60" value="120x60"  name="f_size" data-name="120x60">
+									<label for="fsize_120x60"><span></span> 120x60 </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="fsize_120x240" value="120x240"  name="f_size" data-name="120x240">
+									<label for="fsize_120x240"><span></span> 120x240 </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="fsize_40x40" value="40x40"  name="f_size" data-name="40x40">
+									<label for="fsize_40x40"><span></span> 40x40 </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="fsize_160x80" value="160x80"  name="f_size" data-name="160x80">
+									<label for="fsize_160x80"><span></span> 160x80 </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="fsize_30x45" value="30x45"  name="f_size" data-name="30x45">
+									<label for="fsize_30x45"><span></span> 30x45 </label>
+								</li>
+							</div>
+						</div>
+					</div>
+					<div id="f_floor_material" class="panel panel-default" >
+						<div class="panel-heading" data-toggle="collapse" data-parent="#accordion1" href="#collapse6">
+							<div class="panel-title">
+								<a>BY<span>MATERIAL</span></a>
+							</div>
+						</div>
+
+						<div id="collapse6" class="panel-collapse collapse">
+							<div class="panel-body">
+								<li>
+									<input checked type="checkbox" id="material_porcelain" value="Porcelain Vitrified"  name="f_material" data-name="Porcelain">
+									<label for="material_porcelain"><span></span> Porcelain Vitrified </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="material_ceramic" value="Ceramic"  name="f_material" data-name="Ceramic">
+									<label for="material_ceramic"><span></span> Ceramic </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="material_glazed" value="Double Charge Vitrified"  name="f_material" data-name="Glazed">
+									<label for="material_glazed"><span></span> Double Charge Vitrified </label>
+								</li>
+							</div>
+						</div>
+					</div>
+
+					<div id="f_floor_finish" class="panel panel-default">
+						<div class="panel-heading" data-toggle="collapse" data-parent="#accordion1" href="#collapse7">
+							<div class="panel-title">
+								<a>BY<span>FINISHING</span></a>
+							</div>
+						</div>
+
+						<div id="collapse7" class="panel-collapse collapse">
+							<div class="panel-body">
+								<li>
+									<input checked type="checkbox" id="finish_glossy" value="Glossy"  name="f_finish" data-name="Glossy">
+									<label for="finish_glossy"><span></span> Glossy </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="finish_matt" value="Matt"  name="f_finish" data-name="Matt">
+									<label for="finish_matt"><span></span> Matt </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="finish_glossy" value="Mirror Polished"  name="f_finish" data-name="Glossy">
+									<label for="finish_glossy"><span></span> Mirror Polished </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="finish_glossy" value="Plazma"  name="f_finish" data-name="Glossy">
+									<label for="finish_glossy"><span></span> Plazma </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="finish_matt" value="Rustic"  name="f_finish" data-name="Matt">
+									<label for="finish_matt"><span></span> Rustic </label>
+								</li>
+							</div>
+						</div>
+					</div>
+
+					<div id="f_floor_company" class="panel panel-default">
+						<div class="panel-heading" data-toggle="collapse" data-parent="#accordion1" href="#collapse8">
+							<div class="panel-title">
+								<a>BY<span>COMPANY</span></a>
+							</div>
+						</div>
+
+						<div id="collapse8" class="panel-collapse collapse">
+							<div class="panel-body">
+								<li>
+									<input checked type="checkbox" id="company_kajaria" value="Kajaria"  name="f_company" data-name="Kajaria">
+									<label for="company_kajaria"><span></span> Kajaria </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="company_somany" value="Somany"  name="f_company" data-name="Somany">
+									<label for="company_somany"><span></span> Somany </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="company_kajaria" value="Bajaj"  name="f_company" data-name="Kajaria">
+									<label for="company_kajaria"><span></span> Bajaj </label>
+								</li>
+
+								<li>
+									<input checked type="checkbox" id="company_somany" value="Nitco"  name="f_company" data-name="Somany">
+									<label for="company_somany"><span></span> Nitco </label>
+								</li>
+							</div>
+						</div>
+					</div>
+				</div>
+				</div>
+
+
+			</div>
+		</div>
+
+		<div id="WsideNav3" class="sidenav3">
+			<br>
+			<div id = "btnContainerW5">
+				<h2> WALL PATTERN </h2>
+				<button id="wPatNorm" value='1' class="btn active" onclick = "closeWBaseCombo()">
+					<img class="img-responsive" src="https://www.hrjohnsonindia.com/images/visassets/nopattern.png"
+						 style = " height:40px; width: 40px; border:none">
+				</button>
+				<button id="wPatCheck" value='2' class="btn" onclick = "openWBaseCombo()" >
+					<img class="img-responsive" src="https://www.hrjohnsonindia.com/images/visassets/gridpattern.png"
+						 style = " height:40px; width: 40px; border:none">
+				</button>
+				<button id="wPatVert" value='3' class="btn" onclick = "openWBaseCombo()">
+					<img class="img-responsive" src="https://www.hrjohnsonindia.com/images/visassets/verticalpattern.png"
+						 style = " height:40px; width: 40px; border:none">
+				</button>
+				<button id="wPatHori" value='4' class="btn" onclick = "openWBaseCombo()">
+					<img class="img-responsive" src="https://www.hrjohnsonindia.com/images/visassets/horizontalpattern.png"
+						 style = " height:40px; width: 40px; border:none">
+				</button>
+			</div>
+		</div>
+
+		<div id="FsideNav3" class="sidenav3">
+			<br>
+			<div id = "btnContainerF5">
+				<h2> FLOOR PATTERN </h2>
+				<button id="fPatNorm" value='1' class="btn active" onclick = "closeFBaseCombo()">
+					<img class="img-responsive" src="https://www.hrjohnsonindia.com/images/visassets/nopattern.png"
+						 style = " height:40px; width: 40px; border:none">
+				</button>
+				<button id="fPatCheck" value='2' class="btn" onclick = "openFBaseCombo()" >
+					<img class="img-responsive" src="https://www.hrjohnsonindia.com/images/visassets/gridpattern.png"
+						 style = " height:40px; width: 40px; border:none">
+				</button>
+				<button id="fPatVert" value='3' class="btn" onclick = "openFBaseCombo()">
+					<img class="img-responsive" src="https://www.hrjohnsonindia.com/images/visassets/verticalpattern.png"
+						 style = " height:40px; width: 40px; border:none">
+				</button>
+				<button id="fPatHori" value='4' class="btn" onclick = "openFBaseCombo()">
+					<img class="img-responsive" src="https://www.hrjohnsonindia.com/images/visassets/horizontalpattern.png"
+						 style = " height:40px; width: 40px; border:none">
+				</button>
+			</div>
+		</div>
+
+		<div id="upNav" class="upnav">
+			<button   id ="Info" class="btn-grp" > <i class="fa fa-info-circle" ></i> </button>
+			<button   class="btn-grp" onclick="genScreenshot()"> <i class="fa fa-floppy-o" ></i> </button>
+			<button   class="btn-grp" onclick="printscreen()"> <i class="fa fa-print"></i>
+			<button   class="btn-grp" onclick="mail()"> <i class="fa fa-envelope" ></i> </button>
+			<button   class="btn-grp" onclick="toggleFullScreen()"> <i id = "FS" class="fa fa-expand"></i> </button>
+			<button   class="btn-grp" onclick="closeUpNav()"> <i class="fa fa-times"></i> </button>
+		</div>
+
+		<span class="upNavTab" onclick="openUpNav()"> <i class="fa fa-chevron-circle-down" aria-hidden="true"></i> </span>
+
+		<span  class="editTab" style="right:50%; top: 30%;" onclick="openSideNavW()"> <i class="fa fa-paint-brush" aria-hidden="true"></i> </span>
+		<span  class="editTab" style="right:50%; top: 75%;" onclick="openSideNavF()"> <i class="fa fa-paint-brush" aria-hidden="true"></i> </span>
+
+		<div id="myModal" class="modal">
+		  	<!-- Modal content -->
+		  	<div class="modal-content">
+
+
+					<h3><a href="javascript:void(0)" class="close"><i class="fa fa-close"></i></a> SELECT GROUT </h3>
+
+					<h3>
+						<div id="btnContainerW2" >
+							<button value='black' class="btn" style="background-color:black;border:1px solid black"></button>
+							<button value='yellow' class="btn" style="background-color:yellow;border:1px solid black"></button>
+							<button value='green' class="btn" style="background-color:green;border:1px solid black"></button>
+							<button value='white' class="btn active" style="background-color:white;border:1px solid black"></button>
+							<button value='grey' class="btn" style="background-color:grey;border:1px solid black"></button>
+							<button value='blue' class="btn" style="background-color:blue;border:1px solid black"></button>
+						</div>
+
+						<div id="btnContainerF2">
+							<button value='black'  class="btn active" style="background-color:black;border:1px solid black;"></button>
+							<button value='yellow' class="btn" style="background-color:yellow;border:1px solid black"></button>
+							<button value='green' class="btn" style="background-color:green;border:1px solid black"></button>
+							<button value='white' class="btn" style="background-color:white;border:1px solid black"></button>
+							<button value='grey' class="btn" style="background-color:grey;border:1px solid black"></button>
+							<button value='blue' class="btn" style="background-color:blue;border:1px solid black"></button>
+						</div>
+					</h3>
+		  	</div>
+		</div>
+
+		<div id="myModal1" class="modal">
+		  	<!-- Modal content -->
+		  	<div class="modal-content">
+			  		<h3><a class="close"><i class="fa fa-close"></i></a> UPLOAD TILES </h3>
+
+			</div>
+
+				<div class="modal-body">
+			  		<h2>
+			  		</h2>
+				</div>
+
+		</div>
+
+		<div id="info_panel" class="tiles_info_panel">
+
+			<div class="row">
+				<div class="col-md-12">
+					<h3><a href="javascript:void(0)" class="close_info"><i class="fa fa-close"></i></a> Your  Selected  Combinations </h3>
+				</div>
+
+				<div class="col-md-6">
+
+					<div>
+
+						<div class="row">
+							<h4 class="col-md-12">BASE WALL TILE</h4>
+							<div class="col-md-5"><img id="bwimage" class="img-responsive bwi info" /></div>
+							<div class="col-md-7">
+								<div id="bwname" class="tiletitle bwt">Name: </div>
+								<div id="bwsize" class="tilesize bws">Size:</div>
+								<div id="bwfinish" class="tiledesc bwd">Finishing: </div>
+								<div id="bwmaterial" class="tiledesc bwd">Material: </div>
+								<div id="bwcompany" class="tiledesc bwd">Company: </div>
+							</div>
+
+							<div class="combo">
+							<h4 class="col-md-12">COMBO WALL TILE</h4>
+							<div class="col-md-5"><img id="cwimage" src="uploads/noimage2.jpg" class="img-responsive cwi info" /></div>
+							<div class="col-md-7">
+								<div id="cwname" class="tiletitle bwt">Name: </div>
+								<div id="cwsize" class="tilesize bws">Size:</div>
+								<div id="cwfinish" class="tiledesc bwd">Finishing: </div>
+								<div id="cwmaterial" class="tiledesc bwd">Material: </div>
+								<div id="cwcompany" class="tiledesc bwd">Company: </div>
+							</div>
+						</div>
+						</div>
+					</div>
+				</div>
+
+
+
+				<div class="col-md-6" style="border-left:1px solid rgba(255,255,255,0.3);">
+
+					<div>
+
+						<div class="row">
+							<h4 class="col-md-12">BASE FLOOR TILE</h4>
+							<div class="col-md-5"><img id="bfimage" src="uploads/noimage2.jpg" class="img-responsive bfi info" /></div>
+							<div class="col-md-7">
+								<div id="bfname" class="tiletitle bwt">Name: </div>
+								<div id="bfsize" class="tilesize bws">Size:</div>
+								<div id="bffinish" class="tiledesc bwd">Finishing: </div>
+								<div id="bfmaterial" class="tiledesc bwd">Material: </div>
+								<div id="bfcompany" class="tiledesc bwd">Company: </div>
+							</div>
+
+							<div class="combo">
+							<h4 class="col-md-12">COMBO FLOOR TILE</h4>
+							<div class="col-md-5"><img id="cfimage" src="uploads/noimage2.jpg" class="img-responsive cfi info" /></div>
+							<div class="col-md-7">
+								<div id="cfname" class="tiletitle bwt">Name: </div>
+								<div id="cfsize" class="tilesize bws">Size:</div>
+								<div id="cffinish" class="tiledesc bwd">Finishing: </div>
+								<div id="cfmaterial" class="tiledesc bwd">Material: </div>
+								<div id="cfcompany" class="tiledesc bwd">Company: </div>
+							</div>
+						</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+
+		</div>
+
+
+
+
+
+
+
+
+		<a id="test"></a>
+		<div id="box1"></div>
+		<br>
+		<br>
+		<div class="container" style="border: none">
+			<ul id="contacts" class="list-group">
+			</ul>
+		</div>
+		<script src="index.js"></script>
+	</body>
+</html>
